@@ -6,7 +6,6 @@ namespace SCPSBP
     {
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;
-        public string ServerUrl { get; set; } = "ws://localhost:12345";
         public float VibrateAmplifier { get; set; } = 0;
         public bool VibrateOnReceivingDamage { get; set; } = true;
         public float VibrateDurationOnReceivingDamage { get; set; } = 1;

@@ -120,7 +120,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActivateCmd.cs" />
+    <Compile Include="Connect.cs" />
     <Compile Include="DeviceManager.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />

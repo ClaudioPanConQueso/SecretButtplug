@@ -23,14 +23,14 @@ namespace SCPSBP
             ButtplugClient.DeviceAdded += HandleDeviceAdded;
             ButtplugClient.DeviceRemoved += HandleDeviceRemoved;
         }
-        public async void ConnectDevices()
+        public async void ConnectDevices(string ButtUrl)
         {
             if (ButtplugClient.Connected) return;
 
             try
             {
-                Log.Debug($"Attempting to connect to Intiface server at {Plugin.Instance.Config.ServerUrl}");
-                await ButtplugClient.ConnectAsync(new ButtplugWebsocketConnector(new Uri(Plugin.Instance.Config.ServerUrl)));
+                Log.Debug($"Attempting to connect to Intiface server at {ButtUrl}");
+                await ButtplugClient.ConnectAsync(new ButtplugWebsocketConnector(new Uri(ButtUrl)));
                 Log.Debug("Connection successful. Beginning scan for devices");
                 await ButtplugClient.StartScanningAsync();
             }
@@ -53,31 +53,9 @@ namespace SCPSBP
 
             ConnectedDevices.ForEach(Action);
         }
+        public void StopConnectedDevices() => ConnectedDevices.ForEach(async (ButtplugClientDevice device) => await device.Stop());
 
-        /// <summary>
-        ///  This has to be manually stopped
-        /// </summary>
-        public void VibrateConnectedDevices(double intensity)
-        {
-            intensity += Plugin.Instance.Config.VibrateAmplifier;
-
-            async void Action(ButtplugClientDevice device)
-            {
-                await device.VibrateAsync(Mathf.Clamp((float)intensity, 0f, 1.0f));
-            }
-
-            ConnectedDevices.ForEach(Action);
-        }
-
-        public void StopConnectedDevices()
-        {
-            ConnectedDevices.ForEach(async (ButtplugClientDevice device) => await device.Stop());
-        }
-
-        internal void CleanUp()
-        {
-            StopConnectedDevices();
-        }
+        internal void CleanUp() => StopConnectedDevices();
 
         private void HandleDeviceAdded(object sender, DeviceAddedEventArgs args)
         {
@@ -100,9 +78,6 @@ namespace SCPSBP
         }
 
 
-        private bool IsVibratableDevice(ButtplugClientDevice device)
-        {
-            return device.VibrateAttributes.Count > 0;
-        }
+        private bool IsVibratableDevice(ButtplugClientDevice device) => device.VibrateAttributes.Count > 0;
     }
 }
