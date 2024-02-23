@@ -13,5 +13,11 @@ namespace SCPSBP
         public bool VibrateOnDoingDamage { get; set; } = true;
         public float VibrateDurationOnDoingDamage { get; set; } = 1;
         public float VibrateStrenghtOnDoingDamage { get; set; } = 0.5f;
+        public bool VibrateOnDying { get; set; } = true;
+        public float VibrateDurationOnDying { get; set; } = 1;
+        public float VibrateStrenghtOnDying { get; set; } = 0.5f;
+        public bool VibrateOnDoingKilling { get; set; } = true;
+        public float VibrateDurationOnKilling { get; set; } = 1;
+        public float VibrateStrenghtOnKilling { get; set; } = 0.5f;
     }
 }
