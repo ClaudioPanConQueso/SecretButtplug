@@ -23,8 +23,9 @@ namespace SCPSBP
                 return true;
             }
          
-            Plugin.Instance.handler.Buttplugers.Add(Player.Get(sender));
-            Plugin.DeviceManager.ConnectDevices(arguments.At(0));
+            DeviceManager device = new DeviceManager("SecretButtplug");
+            Plugin.Instance.handler.Buttplugers.Add(Player.Get(sender), device);
+            device.ConnectDevices(arguments.At(0));
             response = "Enjoy the ButtplugIN!";
             return true;
         }

@@ -9,7 +9,6 @@ namespace SCPSBP
         public override string Author => "ClaudioPanConQueso";
         public override Version Version => new Version(1, 0, 2);
         public override Version RequiredExiledVersion => new Version(8, 8, 0);
-        internal static DeviceManager DeviceManager { get; private set; }
         public static Plugin Instance;
         public EventHandlers handler;
         public override void OnEnabled()
@@ -17,7 +16,6 @@ namespace SCPSBP
             Instance = this;
             RegisterEvents();
             base.OnEnabled();
-            DeviceManager = new DeviceManager("SecretButtplug");
         }
 
         public override void OnDisabled()
