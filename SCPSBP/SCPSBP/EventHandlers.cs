@@ -6,25 +6,31 @@ namespace SCPSBP
 {
     public class EventHandlers
     {
-        public List<Player> Buttplugers = new List<Player>();
+        public readonly Dictionary<Player, DeviceManager> Buttplugers = new Dictionary<Player, DeviceManager>();
         public void OnDamage(HurtEventArgs ev)
         {
-            if (Plugin.DeviceManager.ButtplugClient.Connected)
+            if (!Buttplugers.TryGetValue(ev.Player, out DeviceManager manager))
+                return;
+            
+            if (manager.ButtplugClient.Connected)
             {
-                if (Buttplugers.Contains(ev.Player) && Plugin.Instance.Config.VibrateOnReceivingDamage)
-                    Plugin.DeviceManager.VibrateConnectedDevicesWithDuration(Plugin.Instance.Config.VibrateStrenghtOnReceivingDamage, Plugin.Instance.Config.VibrateDurationOnReceivingDamage);
-                else if (Buttplugers.Contains(ev.Attacker) && Plugin.Instance.Config.VibrateOnDoingDamage)
-                    Plugin.DeviceManager.VibrateConnectedDevicesWithDuration(Plugin.Instance.Config.VibrateStrenghtOnDoingDamage, Plugin.Instance.Config.VibrateDurationOnDoingDamage);
+                if (Plugin.Instance.Config.VibrateOnReceivingDamage)
+                    manager.VibrateConnectedDevicesWithDuration(Plugin.Instance.Config.VibrateStrenghtOnReceivingDamage, Plugin.Instance.Config.VibrateDurationOnReceivingDamage);
+                else if (Plugin.Instance.Config.VibrateOnDoingDamage)
+                    manager.VibrateConnectedDevicesWithDuration(Plugin.Instance.Config.VibrateStrenghtOnDoingDamage, Plugin.Instance.Config.VibrateDurationOnDoingDamage);
             }
         }
         public void OnDied(DiedEventArgs ev)
         {
-            if (Plugin.DeviceManager.ButtplugClient.Connected)
+            if (!Buttplugers.TryGetValue(ev.Player, out DeviceManager manager))
+                return;
+            
+            if (manager.ButtplugClient.Connected)
             {
-                if (Buttplugers.Contains(ev.Player) && Plugin.Instance.Config.VibrateOnDying)
-                    Plugin.DeviceManager.VibrateConnectedDevicesWithDuration(Plugin.Instance.Config.VibrateStrenghtOnDying, Plugin.Instance.Config.VibrateDurationOnDying);
-                else if (Buttplugers.Contains(ev.Attacker) && Plugin.Instance.Config.VibrateOnDoingKilling)
-                    Plugin.DeviceManager.VibrateConnectedDevicesWithDuration(Plugin.Instance.Config.VibrateStrenghtOnKilling, Plugin.Instance.Config.VibrateDurationOnKilling);
+                if (Plugin.Instance.Config.VibrateOnDying)
+                    manager.VibrateConnectedDevicesWithDuration(Plugin.Instance.Config.VibrateStrenghtOnDying, Plugin.Instance.Config.VibrateDurationOnDying);
+                else if (Plugin.Instance.Config.VibrateOnDoingKilling)
+                    manager.VibrateConnectedDevicesWithDuration(Plugin.Instance.Config.VibrateStrenghtOnKilling, Plugin.Instance.Config.VibrateDurationOnKilling);
             }
         }
     }
